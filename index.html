@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Norbert's — Rotisserie Chicken · East Dulwich</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,500;1,700&family=Jost:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --black:#000;
+  --black2:#0a0a0a;
+  --white:#f5f0e8;
+  --white2:#ece8e0;
+  --muted:rgba(245,240,232,0.45);
+  --dim:rgba(245,240,232,0.12);
+  --border:rgba(245,240,232,0.1);
+  --border2:rgba(245,240,232,0.06);
+}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--white);font-family:'Jost',sans-serif;font-weight:300;overflow-x:hidden;}
+#cur{position:fixed;pointer-events:none;z-index:9999;display:none;}
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:0 52px;height:64px;display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:'Playfair Display',serif;font-size:20px;font-weight:400;color:var(--white);}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{font-size:10px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;background:var(--white);transition:width .3s;}
+.nav-links a:hover{color:var(--white);}
+.nav-links a:hover::after{width:100%;}
+.nav-cta{font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--black);background:var(--white);padding:9px 20px;text-decoration:none;transition:all .3s;}
+.nav-cta:hover{background:var(--white2);}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px 60px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 60%,rgba(245,240,232,0.03),transparent 70%);pointer-events:none;}
+.hero-name{font-family:'Playfair Display',serif;font-size:clamp(52px,12vw,120px);font-weight:400;letter-spacing:-0.01em;color:var(--white);line-height:1;margin-bottom:44px;animation:fadeDown 1s ease .1s both;}
+.hero-man{width:clamp(160px,28vw,280px);height:clamp(160px,28vw,280px);margin-bottom:36px;animation:fadeUp 1.1s ease .35s both;}
+.hero-man img{width:100%;height:100%;object-fit:contain;transition:transform .4s ease;}
+.hero-man:hover img{animation:slowSpin 8s linear infinite;}
+@keyframes slowSpin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+.hero-tagline{font-family:'Playfair Display',serif;font-size:clamp(16px,3vw,26px);font-weight:400;font-style:italic;color:var(--muted);margin-bottom:10px;animation:fadeUp 1s ease .6s both;}
+.hero-sub{font-family:'Playfair Display',serif;font-size:clamp(14px,2.5vw,22px);font-weight:400;font-style:italic;color:var(--muted);margin-bottom:44px;animation:fadeUp 1s ease .7s both;display:flex;align-items:center;justify-content:center;gap:14px;}
+.hero-plus{color:var(--white);font-style:normal;}
+.hero-btn{animation:fadeUp 1s ease .85s both;margin-bottom:52px;}
+.btn-collect{font-size:10px;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--white);border:1px solid rgba(245,240,232,0.3);padding:14px 32px;text-decoration:none;transition:all .3s;display:inline-block;position:relative;overflow:hidden;}
+.btn-collect::before{content:'';position:absolute;inset:0;background:var(--white);transform:scaleX(0);transform-origin:left;transition:transform .35s ease;}
+.btn-collect:hover::before{transform:scaleX(1);}
+.btn-collect span{position:relative;z-index:1;transition:color .35s;}
+.btn-collect:hover span{color:var(--black);}
+.hero-scroll{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:8px;letter-spacing:0.26em;text-transform:uppercase;color:var(--dim);animation:fadeUp 1s ease 1s both;}
+.scroll-line{width:1px;height:36px;background:linear-gradient(to bottom,var(--muted),transparent);animation:pulse 2s ease infinite;}
+.divider{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.div-item{padding:18px 20px;border-right:1px solid var(--border);font-family:'Playfair Display',serif;font-size:14px;font-style:italic;color:var(--muted);text-align:center;transition:color .3s,background .3s;}
+.div-item:last-child{border-right:none;}
+.div-item:hover{color:var(--white);background:rgba(245,240,232,0.03);}
+.marquee{overflow:hidden;border-bottom:1px solid var(--border);padding:13px 0;}
+.marquee-track{display:flex;animation:scroll 22s linear infinite;white-space:nowrap;}
+.mi{display:flex;align-items:center;gap:28px;padding:0 36px;font-family:'Playfair Display',serif;font-size:16px;font-style:italic;color:var(--muted);white-space:nowrap;}
+.ms{width:4px;height:4px;background:var(--white);border-radius:50%;flex-shrink:0;opacity:0.3;}
+.menu-section{border-bottom:1px solid var(--border);}
+.menu-top{padding:72px 52px 0;text-align:center;margin-bottom:52px;}
+.s-eyebrow{font-size:10px;font-weight:600;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:14px;}
+.ey-line{width:24px;height:1px;background:var(--muted);}
+.s-title{font-family:'Playfair Display',serif;font-size:clamp(44px,8vw,88px);font-weight:400;line-height:0.92;letter-spacing:-0.02em;color:var(--white);}
+.s-title em{font-style:italic;color:var(--muted);}
+.menu-body{border-top:1px solid var(--border);}
+.menu-cat{border-bottom:1px solid var(--border);}
+.cat-top{padding:28px 52px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
+.cat-name{font-family:'Playfair Display',serif;font-size:26px;font-weight:400;font-style:italic;color:var(--white);}
+.cat-note{font-size:10px;color:var(--muted);letter-spacing:0.14em;}
+.menu-rows{padding:0 52px 28px;display:flex;flex-direction:column;}
+.menu-row{display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:15px 0;border-bottom:1px solid var(--border2);}
+.menu-row:last-child{border-bottom:none;}
+.mr-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:400;color:var(--white);}
+.mr-desc{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.6;font-weight:300;}
+.mr-tag{display:inline-block;font-size:8px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);border:1px solid var(--border);padding:2px 7px;margin-left:8px;vertical-align:middle;}
+.mr-price{font-family:'Playfair Display',serif;font-size:17px;font-weight:400;color:var(--white);flex-shrink:0;}
+.bird-section{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border);}
+.bird-left{padding:64px 52px;border-right:1px solid var(--border);display:flex;flex-direction:column;justify-content:center;}
+.bird-right{padding:64px 52px;display:flex;flex-direction:column;justify-content:center;gap:20px;}
+.bird-price{padding:28px;border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;transition:border-color .3s,background .3s;}
+.bird-price:hover{border-color:var(--white);background:rgba(245,240,232,0.03);}
+.bp-name{font-family:'Playfair Display',serif;font-size:20px;font-weight:400;font-style:italic;color:var(--white);}
+.bp-note{font-size:11px;color:var(--muted);margin-top:3px;}
+.bp-price{font-family:'Playfair Display',serif;font-size:40px;font-weight:400;color:var(--white);}
+.sides-section{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--border);}
+.side-col{padding:48px 40px;border-right:1px solid var(--border);}
+.side-col:last-child{border-right:none;}
+.side-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:400;font-style:italic;color:var(--white);margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.side-list{display:flex;flex-direction:column;}
+.side-item{display:flex;justify-content:space-between;align-items:baseline;padding:11px 0;border-bottom:1px solid var(--border2);}
+.side-item:last-child{border-bottom:none;}
+.si-name{font-family:'Playfair Display',serif;font-size:14px;font-weight:400;color:var(--white);}
+.si-price{font-family:'Playfair Display',serif;font-size:14px;color:var(--muted);}
+.si-link{font-family:'Playfair Display',serif;font-size:13px;font-style:italic;color:var(--muted);text-decoration:none;transition:color .2s;}
+.si-link:hover{color:var(--white);}
+.info-section{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border);}
+.info-col{padding:64px 52px;border-right:1px solid var(--border);}
+.info-col:last-child{border-right:none;}
+.info-eyebrow{font-size:9px;font-weight:600;letter-spacing:0.26em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.info-h{font-family:'Playfair Display',serif;font-size:28px;font-weight:400;font-style:italic;color:var(--white);margin-bottom:14px;}
+.info-body{font-size:13px;color:var(--muted);line-height:2;font-weight:300;}
+.hours{display:flex;flex-direction:column;}
+.h-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border2);font-size:12px;color:var(--muted);font-weight:300;}
+.h-row:last-child{border-bottom:none;}
+.h-row.on{color:var(--white);}
+.collect{padding:88px 52px;text-align:center;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.collect::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 50% 50%,rgba(245,240,232,0.03),transparent 70%);pointer-events:none;}
+.collect-title{font-family:'Playfair Display',serif;font-size:clamp(36px,6vw,80px);font-weight:400;line-height:0.92;letter-spacing:-0.02em;color:var(--white);margin-bottom:14px;position:relative;z-index:1;}
+.collect-title em{font-style:italic;color:var(--muted);}
+.collect-sub{font-size:13px;color:var(--muted);line-height:1.9;max-width:380px;margin:0 auto 32px;font-weight:300;position:relative;z-index:1;}
+.btn-big{font-size:10px;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--black);background:var(--white);padding:14px 40px;text-decoration:none;display:inline-block;transition:all .3s;position:relative;z-index:1;}
+.btn-big:hover{background:var(--white2);}
+footer{padding:48px 52px 32px;background:var(--black2);}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px;padding-bottom:36px;border-bottom:1px solid var(--border);}
+.f-logo{font-family:'Playfair Display',serif;font-size:28px;font-weight:400;color:var(--white);margin-bottom:8px;}
+.f-tagline{font-size:12px;color:var(--muted);line-height:1.9;font-weight:300;max-width:260px;margin-top:6px;}
+.f-col-title{font-size:9px;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.f-links{display:flex;flex-direction:column;gap:8px;list-style:none;}
+.f-links a{font-size:13px;color:var(--muted);text-decoration:none;font-weight:300;font-family:'Playfair Display',serif;font-style:italic;transition:color .2s;}
+.f-links a:hover{color:var(--white);}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:24px;flex-wrap:wrap;gap:12px;}
+.f-copy{font-size:11px;color:rgba(245,240,232,0.2);}
+.f-ig{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--muted);transition:color .25s;}
+.f-ig:hover{color:var(--white);}
+.f-ig svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.f-ig-text{font-size:11px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;}
+.badge{position:fixed;bottom:24px;right:24px;z-index:600;background:var(--white);color:var(--black);padding:8px 16px;font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;}
+.r{opacity:0;transform:translateY(20px);transition:opacity .85s ease,transform .85s ease;}
+.r.in{opacity:1;transform:none;}
+.d1{transition-delay:.1s;}.d2{transition-delay:.2s;}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-16px);}to{opacity:1;transform:none;}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+@keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+@media(max-width:768px){
+  #cur{display:none!important;}
+  nav{padding:0 20px;height:58px;}
+  .nav-links{display:none;}
+  .hero{padding:80px 20px 52px;}
+  .hero-scroll{display:none;}
+  .divider{grid-template-columns:1fr 1fr;}
+  .div-item:nth-child(2){border-right:none;}
+  .div-item:nth-child(3){border-top:1px solid var(--border);border-right:1px solid var(--border);}
+  .div-item:nth-child(4){border-top:1px solid var(--border);border-right:none;}
+  .menu-top{padding:52px 20px 0;}
+  .cat-top{padding:18px 20px;}
+  .menu-rows{padding:0 20px 24px;}
+  .bird-section{grid-template-columns:1fr;}
+  .bird-left{padding:40px 20px;border-right:none;border-bottom:1px solid var(--border);}
+  .bird-right{padding:32px 20px;}
+  .sides-section{grid-template-columns:1fr;}
+  .side-col{padding:32px 20px;border-right:none;border-bottom:1px solid var(--border);}
+  .side-col:last-child{border-bottom:none;}
+  .info-section{grid-template-columns:1fr;}
+  .info-col{padding:40px 20px;border-right:none;border-bottom:1px solid var(--border);}
+  .info-col:last-child{border-bottom:none;}
+  .collect{padding:60px 20px;}
+  footer{padding:40px 20px 28px;}
+  .footer-top{grid-template-columns:1fr;gap:32px;}
+  .footer-bottom{flex-direction:column;align-items:flex-start;}
+  .badge{font-size:8px;padding:6px 12px;bottom:16px;right:16px;}
+}
+@media(max-width:480px){
+  .divider{grid-template-columns:1fr;}
+  .div-item{border-right:none;border-bottom:1px solid var(--border);}
+  .div-item:last-child{border-bottom:none;}
+}
+</style>
+</head>
+<body>
+<div id="cur">
+  <svg width="18" height="24" viewBox="0 0 18 24" fill="none">
+    <path d="M1 1L1 19L5.5 14L9 22L11.5 21L8 13L14 13L1 1Z" fill="#000" stroke="#f5f0e8" stroke-width="1.2" stroke-linejoin="round"/>
+  </svg>
+</div>
+<div class="badge">Concept · Johan K · johan-k.vercel.app</div>
+<nav>
+  <div class="nav-logo">norbert's</div>
+  <ul class="nav-links">
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#info">Visit</a></li>
+    <li><a href="#collect">Click &amp; Collect</a></li>
+  </ul>
+  <a href="https://order.toasttab.com/online/norberts" class="nav-cta">Order Now</a>
+</nav>
+<section class="hero">
+  <div class="hero-name">norbert's</div>
+  <div class="hero-man">
+    <img src="https://images.squarespace-cdn.com/content/v1/679ce1ee96814844fa3b9a7f/124b90d5-bd78-4d8d-a625-115ab9656fe4/Icon%2Btitle.png?format=800w" alt="Norbert">
+  </div>
+  <div class="hero-tagline">rotisserie chicken</div>
+  <div class="hero-sub">in <span class="hero-plus">+</span> out</div>
+  <div class="hero-btn">
+    <a href="https://order.toasttab.com/online/norberts" class="btn-collect"><span>Click &amp; Collect Chicken</span></a>
+  </div>
+  <div class="hero-scroll"><div class="scroll-line"></div>Menu</div>
+</section>
+<div class="divider r">
+  <div class="div-item">16 seats only</div>
+  <div class="div-item">Walk-ins only</div>
+  <div class="div-item">Wed — Sat</div>
+  <div class="div-item">East Dulwich, SE22</div>
+</div>
+<div class="marquee">
+  <div class="marquee-track">
+    <div class="mi"><span class="ms"></span>Rotisserie Chicken</div>
+    <div class="mi"><span class="ms"></span>East Dulwich</div>
+    <div class="mi"><span class="ms"></span>16 Seats Only</div>
+    <div class="mi"><span class="ms"></span>Walk-ins Only</div>
+    <div class="mi"><span class="ms"></span>Click &amp; Collect</div>
+    <div class="mi"><span class="ms"></span>Wed to Sat 12pm to 10pm</div>
+    <div class="mi"><span class="ms"></span>Honest Food South London</div>
+    <div class="mi"><span class="ms"></span>Rotisserie Chicken</div>
+    <div class="mi"><span class="ms"></span>East Dulwich</div>
+    <div class="mi"><span class="ms"></span>16 Seats Only</div>
+    <div class="mi"><span class="ms"></span>Walk-ins Only</div>
+    <div class="mi"><span class="ms"></span>Click &amp; Collect</div>
+    <div class="mi"><span class="ms"></span>Wed to Sat 12pm to 10pm</div>
+    <div class="mi"><span class="ms"></span>Honest Food South London</div>
+  </div>
+</div>
+<section class="menu-section" id="menu">
+  <div class="menu-top r">
+    <div class="s-eyebrow"><span class="ey-line"></span>What we're cooking<span class="ey-line"></span></div>
+    <div class="s-title">The <em>Menu.</em></div>
+  </div>
+  <div class="menu-body r d1">
+    <div class="menu-cat">
+      <div class="cat-top"><div class="cat-name">To Start</div><div class="cat-note">3 dishes</div></div>
+      <div class="menu-rows">
+        <div class="menu-row"><div><div class="mr-name">Mug of Broth</div></div><div class="mr-price">£4</div></div>
+        <div class="menu-row"><div><div class="mr-name">Taramasalata &amp; Crisps</div></div><div class="mr-price">£12</div></div>
+        <div class="menu-row"><div><div class="mr-name">Chicken Liver Pate</div></div><div class="mr-price">£14</div></div>
+      </div>
+    </div>
+    <div class="menu-cat">
+      <div class="cat-top"><div class="cat-name">Lunch Only</div><div class="cat-note">Available at lunch</div></div>
+      <div class="menu-rows">
+        <div class="menu-row">
+          <div><div class="mr-name">The Dylan <span class="mr-tag">Lunch</span></div><div class="mr-desc">Rotisserie chicken, gravy, guindilla chillies, aioli and crispy onion sandwich</div></div>
+          <div class="mr-price">£13</div>
+        </div>
+        <div class="menu-row">
+          <div><div class="mr-name">Chicken Caesar Salad <span class="mr-tag">Lunch</span></div></div>
+          <div class="mr-price">£12</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="bird-section r">
+  <div class="bird-left">
+    <div class="s-eyebrow" style="justify-content:flex-start;margin-bottom:16px;"><span class="ey-line"></span>The main event</div>
+    <div class="s-title" style="font-size:clamp(36px,5vw,60px);">The <em>Bird.</em></div>
+    <p style="font-size:13px;color:var(--muted);line-height:1.9;margin-top:16px;font-weight:300;max-width:340px;">Rotisserie chicken, cooked low and slow. Two sauces included. Extra sauce £3 each.</p>
+  </div>
+  <div class="bird-right">
+    <div class="bird-price">
+      <div><div class="bp-name">Half Chicken</div><div class="bp-note">2 sauces included</div></div>
+      <div class="bp-price">£18</div>
+    </div>
+    <div class="bird-price">
+      <div><div class="bp-name">Whole Chicken</div><div class="bp-note">2 sauces included</div></div>
+      <div class="bp-price">£30</div>
+    </div>
+  </div>
+</div>
+<div class="sides-section r d1">
+  <div class="side-col">
+    <div class="side-title">Sides</div>
+    <div class="side-list">
+      <div class="side-item"><div class="si-name">Salad</div><div class="si-price">£8</div></div>
+      <div class="side-item"><div class="si-name">Fries</div><div class="si-price">£6</div></div>
+      <div class="side-item"><div class="si-name">Chicken Fat New Season Potatoes</div><div class="si-price">£6</div></div>
+      <div class="side-item"><div class="si-name">Lentils Vinaigrette</div><div class="si-price">£8</div></div>
+    </div>
+  </div>
+  <div class="side-col">
+    <div class="side-title">Sauces</div>
+    <div class="side-list">
+      <div class="side-item"><div class="si-name">Frank's RedHot</div><div class="si-price">Incl.</div></div>
+      <div class="side-item"><div class="si-name">Aioli</div><div class="si-price">Incl.</div></div>
+      <div class="side-item"><div class="si-name">Pepper Butter</div><div class="si-price">Incl.</div></div>
+      <div class="side-item"><div class="si-name">Chicken Gravy</div><div class="si-price">Incl.</div></div>
+      <div class="side-item"><div class="si-name">Extra Sauce</div><div class="si-price">£3</div></div>
+    </div>
+  </div>
+  <div class="side-col">
+    <div class="side-title">Pudding</div>
+    <div class="side-list">
+      <div class="side-item"><div class="si-name">Steamed Apple Sponge, Rum and Custard</div><div class="si-price">£9</div></div>
+      <div class="side-item"><div class="si-name">Cheese, Honey and Biscuits</div><div class="si-price">£10</div></div>
+      <div class="side-item"><div class="si-name">Drinks List</div><a href="https://crimson-orange-gxta.squarespace.com/s/DrinksList.pdf" class="si-link">View PDF</a></div>
+      <div class="side-item"><div class="si-name">Wine List</div><a href="https://crimson-orange-gxta.squarespace.com/s/Wine-List-0326.pdf" class="si-link">View PDF</a></div>
+    </div>
+  </div>
+</div>
+<section class="info-section r" id="info">
+  <div class="info-col">
+    <div class="info-eyebrow">Find Us</div>
+    <div class="info-h">East Dulwich.</div>
+    <div class="info-body">5-6 Melbourne Terrace<br>Melbourne Grove<br>East Dulwich<br>London SE22 8RE</div>
+    <div style="margin-top:24px;">
+      <div class="info-eyebrow">Walk-ins Only</div>
+      <p class="info-body" style="margin-top:8px;">We do not take reservations. If we are full we will add your name to a list and point you somewhere nearby for a drink. Baby slings recommended.</p>
+    </div>
+    <a href="mailto:chicken@norbertslondon.com" style="font-family:'Playfair Display',serif;font-size:17px;font-style:italic;color:var(--white);text-decoration:none;display:inline-block;margin-top:20px;">chicken@norbertslondon.com</a>
+  </div>
+  <div class="info-col">
+    <div class="info-eyebrow">Opening Hours</div>
+    <div class="info-h">When we are open.</div>
+    <div class="hours">
+      <div class="h-row"><span>Monday</span><span>Closed</span></div>
+      <div class="h-row"><span>Tuesday</span><span>Closed</span></div>
+      <div class="h-row on"><span>Wednesday</span><span>12pm to 10pm</span></div>
+      <div class="h-row on"><span>Thursday</span><span>12pm to 10pm</span></div>
+      <div class="h-row on"><span>Friday</span><span>12pm to 10pm</span></div>
+      <div class="h-row on"><span>Saturday</span><span>12pm to 10pm</span></div>
+      <div class="h-row"><span>Sunday</span><span>Closed</span></div>
+    </div>
+  </div>
+</section>
+<section class="collect r" id="collect">
+  <div class="collect-title">Order online.<br><em>Pick up fresh.</em></div>
+  <p class="collect-sub">Can not make it in? Order online and collect when your chicken is ready. Same bird, same quality.</p>
+  <a href="https://order.toasttab.com/online/norberts" class="btn-big">Click and Collect Chicken</a>
+</section>
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="f-logo">norbert's</div>
+      <div class="f-tagline">Rotisserie chicken. 16 seats. Walk-ins only. East Dulwich, London. Wednesday to Saturday, 12pm to 10pm.</div>
+    </div>
+    <div>
+      <div class="f-col-title">Menu</div>
+      <ul class="f-links">
+        <li><a href="#menu">Starters</a></li>
+        <li><a href="#menu">Lunch Specials</a></li>
+        <li><a href="#menu">The Bird</a></li>
+        <li><a href="#menu">Sides and Sauces</a></li>
+        <li><a href="#menu">Pudding</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="f-col-title">Visit</div>
+      <ul class="f-links">
+        <li><a href="#info">Find Us</a></li>
+        <li><a href="#info">Opening Hours</a></li>
+        <li><a href="#collect">Click and Collect</a></li>
+        <li><a href="https://crimson-orange-gxta.squarespace.com/s/DrinksList.pdf">Drinks List</a></li>
+        <li><a href="https://crimson-orange-gxta.squarespace.com/s/Wine-List-0326.pdf">Wine List</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="f-copy">2026 Norbert's London · Concept by Johan K · johan-k.vercel.app</div>
+    <a href="https://www.instagram.com/norbertslondon" class="f-ig">
+      <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+      <span class="f-ig-text">@norbertslondon</span>
+    </a>
+  </div>
+</footer>
+<script>
+var cur = document.getElementById('cur');
+if (!('ontouchstart' in window) && navigator.maxTouchPoints === 0) {
+  cur.style.display = 'block';
+  document.body.style.cursor = 'none';
+  var s = document.createElement('style');
+  s.textContent = '* { cursor: none !important; }';
+  document.head.appendChild(s);
+  document.addEventListener('mousemove', function(e) {
+    cur.style.left = e.clientX + 'px';
+    cur.style.top = e.clientY + 'px';
+  });
+}
+var obs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
+  });
+}, { threshold: 0.07 });
+document.querySelectorAll('.r').forEach(function(el) { obs.observe(el); });
+</script>
+</body>
+</html>
